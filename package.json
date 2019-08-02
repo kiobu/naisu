@@ -1,0 +1,33 @@
+{
+  "name": "naisu",
+  "version": "1.0.0",
+  "description": "Naisubot.",
+  "main": "index.js",
+  "dependencies": {
+    "chalk": "^2.4.2",
+    "cheerio": "^1.0.0-rc.3",
+    "discord.js": "^11.5.1",
+    "express": "^4.17.1",
+    "fs": "^0.0.1-security",
+    "mal-scraper": "^2.6.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/moschetto/naisu.git"
+  },
+  "keywords": [
+    "bot",
+    "discord",
+    "node"
+  ],
+  "author": "vex#0011",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/moschetto/naisu/issues"
+  },
+  "homepage": "https://github.com/moschetto/naisu#readme"
+}
