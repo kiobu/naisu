@@ -125,7 +125,45 @@ naisu.on('message', (msg) => {
             if (msg.content.includes("sendinfo")) {
                 if (msg.member.roles.find(r => r.name == "staff")) {
                     msg.delete();
-                    msg.channel.send("The info!")
+                    msg.channel.send("If you have embeds disabled, you can't get verified! If they aren't already, enable them to see the rest of the message.")
+                    msg.channel.send({embed: {
+                        color: config.embedcolor,
+                        /*author: {
+                        name: msg.guild.name,
+                        icon_url: msg.guild.iconURL
+                        },*/
+                        title: "Rules",
+                        description: 
+                        `**1. NSFW**
+                            1a. As of now, there is no NSFW channel. Don't post any.\n
+                        **2. Advertisement**
+                            2a. Don't shill your server in here or in the DMs of people here (unless they ask).\n
+                            2b. This is only limited to Discord servers. You may advertise your own products, websites, or other social mediums.\n
+                        **3. Appeals**
+                            3a. If you get banned and want to be let back in, talk to vex#0011.\n
+                            3b. If you have a complaint about a staff member, talk to vex#0011.\n
+                        **4. General Guidelines**
+                            4a. Shitposting is tolerable in moderation. Just don't spam.\n
+                            4b. Talk shit all you want, just expect poetic justice.\n`,
+                        fields: [{
+                            name: "Inviting People",
+                            value: "You may use [this](https://discord.gg/SnfMXSq) permalink to invite people you know."
+                        },
+                        {
+                            name: "Verification",
+                            value: "To gain access to access the rest of the server, you can type 'verifyme' in this channel. Doing so confirms that you have read the above."
+                        },
+                        {
+                            name: "Nitro Boosting",
+                            value: "Don't do it. It's useless here, as it is a development server (for now!)"
+                        }
+                        ],
+                        footer: {
+                        icon_url: msg.guild.iconURL,
+                        text: "if you are seeing this, that means you have embeds enabled!"
+                        }
+                    } 
+                });
                     return;
                 } else {
                     msg.delete();

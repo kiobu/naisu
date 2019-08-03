@@ -2,10 +2,10 @@
     "token": "NjA2NTcxNzYxOTE5NTkwNTAz.XUNRhw.88EdYSGAJaoHOosfTNK9WGHnUdE",
     "prefix": "!",
     "name": "Naisu!",
-    "embedcolor": "#FF98F0",
+    "embedcolor": "1279041",
 
     "_comment-token": "Your 'token' property is where you should put your bot token.",
     "_comment-prefix": "Your 'prefix' property is where you should put the prefix the bot will check for commands.",
     "_comment-name": "Your 'name' property is where you should put the name of your bot. This will appear at the bottom of many embeds.",
-    "_comment-embedcolor": "Your 'embedcolor' property is where you should put the color you want to be used for most embed messages. This is in hexadecimal."
+    "_comment-embedcolor": "Your 'embedcolor' property is where you should put the color you want to be used for most embed messages. This is in 0x."
 }
