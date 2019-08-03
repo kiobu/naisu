@@ -1,2 +1,3 @@
-# satoshi
-A Discord bot based off of Kosaki.
+# Naisu!
+
+A bot made for a specific server.

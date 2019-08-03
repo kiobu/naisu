@@ -2,6 +2,9 @@ const chalk = require('chalk')
 const Discord = require('discord.js')
 const fs = require('fs')
 const path = require('path')
+const SQLite = require('better-sqlite3')
+
+const sql = new SQLite('./data.sqlite')
 
 let config = "";
 
@@ -31,9 +34,29 @@ try {
     config = require('./config.json')
     naisu.config = config;
 } catch (error) {
-    naisu.error(`The configuration file could not be loaded:\n${error.stack}`)
+    naisu.error(`The configuration file could not be loaded!:\n${error.stack}`)
 }
 
+// Checks for database table data and runs a few essential queries.
+
+const exptab = sql.prepare("SELECT count(*) FROM sqlite_master WHERE type='table' AND name='experience';").get()
+const vertab = sql.prepare("SELECT count(*) FROM sqlite_master WHERE type='table' AND name='verify';").get()
+
+if (!vertab['count(*)']) {
+    naisu.log('The verification table was not found! Creating...')
+    sql.prepare("CREATE TABLE IF NOT EXISTS verify (serverid INTEGER, enabled BOOLEAN, role TEXT, channel TEXT, command TEXT);").run()
+    sql.pragma("synchronous = 1")
+    sql.pragma("journal_mode = wal")
+    naisu.log('... Done!')
+} 
+
+if (!exptab['count(*)']) {
+    naisu.log('The experience table was not found! Creating...')
+    sql.prepare("CREATE TABLE IF NOT EXISTS experience (id TEXT PRIMARY KEY, userid TEXT, username TEXT, serverid INTEGER, points INTEGER, memberid TEXT);").run()
+    sql.pragma("synchronous = 1")
+    sql.pragma("journal_mode = wal")
+    naisu.log('... Done!')
+}
 
 // Initializes Naisubot.
 
@@ -71,8 +94,12 @@ naisu.moduleinit = function() {
 }
 
 naisu.on('message', (msg) => {
-    if (!msg.content.startsWith(config.prefix)) {return} // Check if the message starts with our prefix.
-    if (msg.content.length == config.prefix.length) {return} // Check if only the prefix was sent with no command.
+
+    if (msg.guild == null) {return} // Check if the message is anything but a server/guild.
+    if (msg.channel.id != "606565560733663242") { // Checks if our message is NOT in the verification channel.
+        if (!msg.content.startsWith(config.prefix)) {return} // Check if the message starts with our prefix.
+        if (msg.content.length == config.prefix.length) {return} // Check if only the prefix was sent with no command.
+    }
 
     // Get all the arguments of the message that passes the above checks.
     let tmp = msg.content.substring(config.prefix.length, msg.length).split(' '); 
@@ -89,7 +116,31 @@ naisu.on('message', (msg) => {
         return naisu.modules[command].exec(msg, args)
     }
 
-    return msg.delete();
+    // Personal server-specific verification methods.
+
+    let verificationChannel = naisu.channels.get("606565560733663242")
+    if (msg.channel == verificationChannel) {
+        let role = msg.guild.roles.find(role => role.name === "verified");
+        if (!msg.author.bot) {
+            if (msg.content.includes("sendinfo")) {
+                if (msg.member.roles.find(r => r.name == "staff")) {
+                    msg.delete();
+                    msg.channel.send("The info!")
+                    return;
+                } else {
+                    msg.delete();
+                    msg.author.send("You must be staff to use that command!")
+                }
+            } else if (!msg.content.includes("verifyme")) {
+                msg.delete();
+                msg.author.send("Please read the information in #verification before posting!")
+            } else if (msg.content.includes("verifyme")) {
+                msg.delete();
+                msg.member.addRole(role);
+                msg.author.send("You have been verified!")
+            }
+        }
+    }
 })
 
 module.exports = {
