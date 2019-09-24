@@ -10,7 +10,8 @@
     "discord.js": "^11.5.1",
     "express": "^4.17.1",
     "fs": "^0.0.1-security",
-    "mal-scraper": "^2.6.3"
+    "mal-scraper": "^2.6.3",
+    "request-promise": "^4.2.4"
   },
   "devDependencies": {},
   "scripts": {
