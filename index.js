@@ -96,7 +96,7 @@ naisu.moduleinit = function() {
 naisu.on('message', (msg) => {
 
     if (msg.guild == null) {return} // Check if the message is anything but a server/guild.
-    if (msg.channel.id != "606565560733663242") { // Checks if our message is NOT in the verification channel.
+    if (msg.channel.id != "606565560733663242") { // Checks if our message is NOT in the verification channel (used for testing purposes).
         if (!msg.content.startsWith(config.prefix)) {return} // Check if the message starts with our prefix.
         if (msg.content.length == config.prefix.length) {return} // Check if only the prefix was sent with no command.
     }

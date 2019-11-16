@@ -7,5 +7,7 @@
     "_comment-token": "Your 'token' property is where you should put your bot token.",
     "_comment-prefix": "Your 'prefix' property is where you should put the prefix the bot will check for commands.",
     "_comment-name": "Your 'name' property is where you should put the name of your bot. This will appear at the bottom of many embeds.",
-    "_comment-embedcolor": "Your 'embedcolor' property is where you should put the color you want to be used for most embed messages. This is in 0x."
+    "_comment-embedcolor": "Your 'embedcolor' property is where you should put the color you want to be used for most embed messages. This is in 0x.",
+
+    "discordTag": "kiobu#0011"
 }

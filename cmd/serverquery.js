@@ -11,14 +11,13 @@ exports.exec = function(msg, args) {
   let sv = args;
 
   const config = {
-    url: `https://www.gametracker.com/components/html0/?host=${sv}&bgColor=1F2642&fontColor=8790AE&titleBgColor=11172D&titleColor=FFFFFF&borderColor=333333&linkColor=FF9900&borderLinkColor=999999&showMap=1&currentPlayersHeight=100&showCurrPlayers=1&topPlayersHeight=100&showTopPlayers=1&showBlogs=0&width=240`,
+    /* &showTopPlayers=1 -- show top players. */
+    url: `https://www.gametracker.com/components/html0/?host=${sv}&bgColor=1F2642&fontColor=8790AE&titleBgColor=11172D&titleColor=FFFFFF&borderColor=333333&linkColor=FF9900&borderLinkColor=999999&showMap=1&currentPlayersHeight=100&showCurrPlayers=1&topPlayersHeight=100&showBlogs=0&width=240`,
     headers: {'user-agent': 'node.js'},
     transform: function (body) {
       return cheerio.load(body)
     }
   };
-
-  index.naisu.log(config.url);
 
   rq(config)
     .then(($) => {
@@ -30,15 +29,26 @@ exports.exec = function(msg, args) {
       let gamename = $('.item_float_right').find('img').attr('title')
       let mapimage = $('.image_160x120').attr('src');
 
-      let playerList = "";
+      let playerList = [];
 
-      $('.scrollable channelViewScrollable.scrollable_on_c02').each(function(){
-        playerList += $(this).text() + "|";
+      $('.scrollable_on_c02').each(function(){
+        playerList.push($(this).text().replace(/\s/g, ''));
       })
 
-      console.log("!!");
-      console.log(playerList)
-      console.log("!??");
+      let playerString = "";
+      let MAX = 20;
+
+      if (playerList.length <= 0) {
+        playerString = "No online players."
+      } else {
+        for (let i = 0; i <= MAX; i+=4) {
+          playerString+= `${playerList[i]}, ${playerList[i+1]}, ${playerList[i+2]}, ${playerList[i+3]},\n`
+        }
+      }
+
+      if (playerList.length > MAX) {
+        playerString += `\n... and ${playerList.length-MAX} more.`
+      }
 
       let svname = $('.server_name').text().replace(/\s/g,'')
       let data = $('.info_line').text().replace(/\s/g,'').replace(/:/g, ':\u00A0')
@@ -75,8 +85,9 @@ exports.exec = function(msg, args) {
       .addField("Playercount", players.replace("Players:", ""))
       .addField("Rank", rank.replace("Rank:", ""))
       .addField("Map", map.replace("Map:", ""))
+      .addField("Player List", `\`\`\`css\n${playerString}\`\`\``)
       .setImage(`https:${mapimage}`)
-      .setFooter("Created by vex#3139.")
+      .setFooter(`If no map image is present, the GameTracker API limit has been exceeded.`)
     }
 
     msg.channel.send(message)
