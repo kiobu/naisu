@@ -4,6 +4,10 @@ const cheerio = require("cheerio")
 const rq = require("request-promise")
 const chalk = require("chalk");
 
+const path = require("path");
+
+const error = require("../lib/error");
+
 exports.exec = function(msg, args) {
 
   if (args.length === 0) return msg.delete()
@@ -67,14 +71,9 @@ exports.exec = function(msg, args) {
     let message = ''
 
     if (svname === '' || undefined) {
-      message = ":warning: Server not found."
-      console.log(chalk.yellow(`[searchserver] `) + `Server not found, undefined, or malformed string.`)
-    } else if (ip.indexOf('9987') >-1 || ip.indexOf('8767') >-1) {
-      console.log(chalk.yellow(`[searchserver] `) + `Server is a TeamSpeak server.`)
-      message = ":warning: Server is a TeamSpeak server. Currently, voice servers are not implemented."
-    } else if (ip.indexOf('4489') > -1) {
-      console.log(chalk.yellow(`[searchserver] `) + `Server is a Ventrilo server.`)
-      message = ":warning: Server is a Ventrilo server. Currently, voice servers are not implemented."
+      error.IllegalArgumentException(msg, args, "Server not found. Either it does not exist, or the string was malformed.")
+    } else if (ip.indexOf('9987') >-1 || ip.indexOf('8767') >-1 || ip.indexOf('4489') > -1) {
+      error.IllegalArgumentException(msg, args, "Voice servers are not supported.")
     } else {
     message = new Discord.RichEmbed()
       .setTitle(svname)
