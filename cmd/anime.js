@@ -7,7 +7,7 @@ const error = require("../lib/error")
 function exec(msg, args) {
 
     if (args.length === 0) {
-        error.NoArgsException(msg, args, error)
+        error.NoArgsException(msg, args, "No anime was given.")
     } 
     else {
 
