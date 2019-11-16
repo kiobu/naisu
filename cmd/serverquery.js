@@ -40,13 +40,16 @@ exports.exec = function(msg, args) {
       })
 
       let playerString = "";
-      let MAX = 20;
+      let MAX = 10;
 
       if (playerList.length <= 0) {
         playerString = "No online players."
       } else {
-        for (let i = 0; i <= MAX; i+=4) {
-          playerString+= `${playerList[i]}, ${playerList[i+1]}, ${playerList[i+2]}, ${playerList[i+3]},\n`
+	if (playerList.length < MAX) {
+		MAX = playerList.length;
+	};
+        for (let i = 0; i < MAX; i++) {
+          playerString+= `${playerList[i]}\n`
         }
       }
 
