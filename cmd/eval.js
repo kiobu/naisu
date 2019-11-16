@@ -13,6 +13,7 @@ function exec(msg, args) {
                 msg.channel.send(eval(msg.content.substring(5, msg.content.length)));
                 msg.delete();
             } catch(e) {
+                error.GenericException(msg, args, "Eval failed.")
                 console.log(e)
             };
         };
