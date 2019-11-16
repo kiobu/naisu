@@ -7,7 +7,7 @@ function exec(msg) {
                 'embed': {
                     'title': "Pong!",
                     'description': `Took ${message.createdTimestamp - msg.createdTimestamp}ms.`,
-                    'color': index.config.embedcolor
+                    'color': index.naisu.config.embedcolor
                 }
             })
         })
