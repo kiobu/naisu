@@ -2,10 +2,12 @@ const index = require('../index')
 const mal = require('mal-scraper')
 const Discord = require('discord.js')
 
+const error = require("../lib/error")
+
 function exec(msg, args) {
 
     if (args.length === 0) {
-        msg.reply("You did not specify the name of an anime!")
+        error.NoArgsException(msg, args, error)
     } 
     else {
 
