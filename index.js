@@ -40,19 +40,11 @@ try {
 // Checks for database table data and runs a few essential queries.
 
 const exptab = sql.prepare("SELECT count(*) FROM sqlite_master WHERE type='table' AND name='experience';").get()
-const vertab = sql.prepare("SELECT count(*) FROM sqlite_master WHERE type='table' AND name='verify';").get()
-
-if (!vertab['count(*)']) {
-    naisu.log('The verification table was not found! Creating...')
-    sql.prepare("CREATE TABLE IF NOT EXISTS verify (serverid INTEGER, enabled BOOLEAN, role TEXT, channel TEXT, command TEXT);").run()
-    sql.pragma("synchronous = 1")
-    sql.pragma("journal_mode = wal")
-    naisu.log('... Done!')
-} 
 
 if (!exptab['count(*)']) {
     naisu.log('The experience table was not found! Creating...')
-    sql.prepare("CREATE TABLE IF NOT EXISTS experience (id TEXT PRIMARY KEY, userid TEXT, username TEXT, serverid INTEGER, points INTEGER, memberid TEXT);").run()
+    sql.prepare("CREATE TABLE IF NOT EXISTS experience (uid TEXT PRIMARY KEY, userid TEXT, username TEXT, serverid TEXT, xp INTEGER, lvl INTEGER);").run()
+    sql.prepare("CREATE UNIQUE INDEX idx_scores_id ON experience (uid);").run();
     sql.pragma("synchronous = 1")
     sql.pragma("journal_mode = wal")
     naisu.log('... Done!')
@@ -95,15 +87,41 @@ naisu.moduleinit = function() {
 
 naisu.on('message', (msg) => {
 
-    if (msg.guild == null) {return} // Check if the message is anything but a server/guild.
-    if (msg.channel.id != "606565560733663242") { // Checks if our message is NOT in the verification channel (used for testing purposes).
-        if (!msg.content.startsWith(config.prefix)) {return} // Check if the message starts with our prefix.
-        if (msg.content.length == config.prefix.length) {return} // Check if only the prefix was sent with no command.
+    if (msg.content.length == config.prefix.length) {return}
+
+    naisu.getScore = sql.prepare("SELECT * FROM `experience` WHERE serverid = ? AND userid = ?");
+    naisu.setScore = sql.prepare("INSERT OR REPLACE INTO experience (uid, userid, username, serverid, xp, lvl) VALUES (@uid, @userid, @username, @serverid, @xp, @lvl);")
+
+    if (msg.author.bot) return;
+    if (msg.channel.type !== "text") return;
+
+    if (msg.guild) {
+        let localscore = naisu.getScore.get(msg.guild.id, msg.author.id);
+
+        if (!localscore) {
+            localscore = {
+                uid: `${msg.guild.id}::${msg.author.id}`,
+                userid: msg.author.id,
+                username: msg.author.username,
+                serverid: msg.guild.id,
+                xp: 0,
+                lvl: 1,
+            }
+        }
+        localscore.xp++;
+        const nxtLvl = Math.floor(0.1 * Math.sqrt(localscore.xp));
+        if (localscore.lvl < nxtLvl) {
+            localscore.lvl++;
+            msg.reply(`You're now level **${nxtLvl}**.`)
+        }
+        naisu.setScore.run(localscore);
     }
 
     // Get all the arguments of the message that passes the above checks.
     let tmp = msg.content.substring(config.prefix.length, msg.length).split(' '); 
     let args = [];
+
+    if (!msg.content.startsWith(config.prefix)) {return}
 
     // Push the arguments to the args table.
     for (let i = 1; i < tmp.length; i++) {
@@ -116,7 +134,6 @@ naisu.on('message', (msg) => {
         return naisu.modules[command].exec(msg, args)
     }
 })
-
 module.exports = {
     naisu: naisu,
 }
