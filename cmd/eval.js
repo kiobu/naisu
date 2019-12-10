@@ -5,6 +5,8 @@ const kio = "114843644896346116"
 const moo = "546812203697963036"
 const swr = "552871078008193063"
 
+const index = require('../index')
+
 function exec(msg, args) {
 
     if (args.length === 0) {
@@ -20,11 +22,11 @@ function exec(msg, args) {
         //msg.reply("You are not the bot's creator!");
     } else {
         try {
-            msg.channel.send(eval(msg.content.substring(5, msg.content.length)));
+            msg.channel.send(eval(msg.content.substring(index.naisu.config.prefix.length + 4, msg.content.length)));
             msg.delete();
         } catch(e) {
-            msg.reply("Eval failed!");
-            console.log(e)
+            error.GenericException(msg, args, `The evaluation failed.\n\n**Stack trace:**\n${e}`)
+            index.naisu.error(e)
         };
 }   ;
 };
