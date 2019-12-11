@@ -1,4 +1,5 @@
 botToken.txt
+*.sqlite*
 
 # Logs
 logs
