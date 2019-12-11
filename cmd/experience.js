@@ -1,5 +1,5 @@
 const SQLite = require("better-sqlite3")
-const sql = new SQLite('./data.sqlite')
+const sql = new SQLite('db/data.sqlite')
 const Discord = require("discord.js")
 
 const index = require("../index");
@@ -14,10 +14,8 @@ exports.exec = function(msg) {
       .setColor(0x00AE86)
       //.setDescription(`Data for '${msg.author.username}' in '${msg.guild.name}'.`)
       .setFooter(`Created by ${index.naisu.config.discordTag}`, `${index.naisu.user.avatarURL}`)
-      .setImage(`${msg.author.avatarURL}`)
-      .setThumbnail(`${msg.guild.iconURL}`)
+      .setThumbnail(`${msg.author.avatarURL}`)
       .setTimestamp()
-      .setURL("https://discord.js.org/#/docs/main/indev/class/RichEmbed")
       .addField("Level", `${score.lvl}`)
       .addField("Points/XP", `${score.xp}`, true)
     
