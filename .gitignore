@@ -1,5 +1,6 @@
 botToken.txt
 *.sqlite*
+config.json
 
 # Logs
 logs
