@@ -105,11 +105,13 @@ naisu.on('message', (msg) => {
                 username: msg.author.username,
                 serverid: msg.guild.id,
                 xp: 0,
-                lvl: 1,
+                lvl: 0,
             }
         }
         localscore.xp++;
-        const nxtLvl = Math.floor(0.1 * Math.sqrt(localscore.xp));
+
+        //const nxtLvl = Math.floor(0.5 * Math.sqrt(localscore.xp));
+        const nxtLvl = Math.floor(Math.sqrt(localscore.xp/10));
         if (localscore.lvl < nxtLvl) {
             localscore.lvl++;
             msg.reply(`You're now level **${nxtLvl}**.`)
