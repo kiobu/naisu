@@ -8,6 +8,8 @@ const error = require("../lib/error");
 exports.exec = function(msg) {
     
     let score = sql.prepare("SELECT * FROM experience WHERE userid = ? AND serverid = ?;").get(msg.author.id, msg.guild.id);
+
+    let nxtLvl = (10*Math.pow((score.lvl+1), 2));
     
     const embed = new Discord.RichEmbed()
       .setAuthor(`${msg.author.username}`, `${msg.author.avatarURL}`)
@@ -18,6 +20,7 @@ exports.exec = function(msg) {
       .setTimestamp()
       .addField("Level", `${score.lvl}`)
       .addField("Points/XP", `${score.xp}`, true)
+      .addField("Points until level up", nxtLvl);
     
     msg.channel.send({embed});
 
