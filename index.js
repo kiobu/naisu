@@ -136,6 +136,9 @@ naisu.on('message', (msg) => {
         return naisu.modules[command].exec(msg, args)
     }
 })
+
+naisu.on('error', console.error);
+
 module.exports = {
     naisu: naisu,
 }
