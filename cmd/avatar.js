@@ -11,12 +11,15 @@ exports.exec = function(msg, args) {
     } else {
 
         let target = msg.mentions.users.first();
-    
+	if (!target) {
+	    error.IllegalArgumentException(msg,args,"Tag the user rather than typing their name.");
+    	} else {
         const embed = new Discord.RichEmbed()
         .setAuthor(target.username)
         .setColor(0x00AE86)
         .setImage(target.avatarURL)
         
         msg.channel.send({embed});
+	}
     }
 }
