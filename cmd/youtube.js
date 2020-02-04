@@ -2,7 +2,7 @@ const index = require("../index");
 const error = require("../lib/error");
 const Discord = require("discord.js");
 
-const KEY = "KEY HERE"
+const KEY = index.naisu.config.gapi;
 
 var search = require('youtube-search');
     var opts = {
