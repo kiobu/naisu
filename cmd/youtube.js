@@ -2,7 +2,7 @@ const index = require("../index");
 const error = require("../lib/error");
 const Discord = require("discord.js");
 
-const KEY = "AIzaSyBeB-29zJ1M369zrzl1EFCNmwQ8y7Jt-nk"
+const KEY = "KEY HERE"
 
 var search = require('youtube-search');
     var opts = {
