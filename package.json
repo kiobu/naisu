@@ -11,7 +11,8 @@
     "express": "^4.17.1",
     "fs": "^0.0.1-security",
     "mal-scraper": "^2.6.3",
-    "request-promise": "^4.2.4"
+    "request-promise": "^4.2.4",
+    "youtube-search": "^1.1.4"
   },
   "devDependencies": {},
   "scripts": {

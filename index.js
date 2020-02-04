@@ -137,7 +137,10 @@ naisu.on('message', (msg) => {
     }
 })
 
-naisu.on('error', console.error);
+naisu.on('error', function() {
+    naisu.error(`An error has occured that has caused Naisu to shut down. You should use breakpoints to isolate the problem:`)
+    console.error;
+})
 
 module.exports = {
     naisu: naisu,
