@@ -13,6 +13,7 @@
     "fs": "^0.0.1-security",
     "mal-scraper": "^2.6.3",
     "request-promise": "^4.2.4",
+    "yargs": "^15.3.1",
     "youtube-search": "^1.1.4"
   },
   "devDependencies": {},
