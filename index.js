@@ -142,6 +142,10 @@ naisu.on('error', function() {
     console.error;
 })
 
+process.on('unhandledRejection', err => {
+    naisu.error(`The bot could not be initialized. Stack: \n${err.stack}`)
+})
+
 module.exports = {
     naisu: naisu,
 }
