@@ -5,36 +5,23 @@ const path = require('path')
 const SQLite = require('better-sqlite3')
 
 const sql = new SQLite('db/data.sqlite')
+const logger = require('./lib/logger');
 
 let config = "";
 
 const naisu = new Discord.Client();
 
-// Informational logging.
-
-naisu.error = function(message) {
-    console.log(chalk.red(`[naisu] `) + `${message}`)
-}
-
-naisu.log = function(message) {
-    console.log(chalk.gray(`[naisu] `) + `${message}`)
-}
-
-naisu.success = function(message) {
-    console.log(chalk.green(`[naisu] `) + `${message}`)
-}
-
 // Checks for config.json
 
 if (!fs.existsSync(path.join(__dirname, 'config.json'))) {
-    naisu.error("config.json not found!")
+    logger.error("config.json not found!")
 } 
 
 try {
     config = require('./config.json')
     naisu.config = config;
 } catch (error) {
-    naisu.error(`The configuration file could not be loaded!:\n${error.stack}`)
+    logger.error(`The configuration file could not be loaded!:\n${error.stack}`)
 }
 
 // Checks for database table data and runs a few essential queries.
@@ -42,24 +29,24 @@ try {
 const exptab = sql.prepare("SELECT count(*) FROM sqlite_master WHERE type='table' AND name='experience';").get()
 
 if (!exptab['count(*)']) {
-    naisu.log('The experience table was not found! Creating...')
+    logger.log('The experience table was not found! Creating...')
     sql.prepare("CREATE TABLE IF NOT EXISTS experience (uid TEXT PRIMARY KEY, userid TEXT, username TEXT, serverid TEXT, xp INTEGER, lvl INTEGER);").run()
     sql.prepare("CREATE UNIQUE INDEX idx_scores_id ON experience (uid);").run();
     sql.pragma("synchronous = 1")
     sql.pragma("journal_mode = wal")
-    naisu.log('... Done!')
+    logger.log('... Done!')
 }
 
 // Initializes Naisubot.
 
 naisu.on('ready', () => {
-    naisu.log('Loading modules...')
+    logger.log('Loading modules...')
     naisu.moduleinit();
-    naisu.success(`Successfuly logged in as ${naisu.user.tag}!`)
+    logger.success(`Successfuly logged in as ${naisu.user.tag}!`)
 })
 
 naisu.login(config.token);
-naisu.log('Naisu initialized.')
+logger.log('Naisu initialized.')
 
 // Loads the modules.
 
@@ -78,9 +65,9 @@ naisu.moduleinit = function() {
                 naisu.modules[name].init(naisu)
             }
 
-            naisu.log(`Module '${name}' is ready.`)
+            logger.log(`Module '${name}' is ready.`)
         } catch (error) {
-            naisu.error(`Error in module '${name}':\n${error.stack}`)
+            logger.error(`Error in module '${name}':\n${error.stack}`)
         }
     })
 }
@@ -138,15 +125,16 @@ naisu.on('message', (msg) => {
 })
 
 naisu.on('error', function() {
-    naisu.error(`An error has occured that has caused Naisu to shut down. You should use breakpoints to isolate the problem:`)
+    logger.error(`An error has occured that has caused Naisu to shut down. You should use breakpoints to isolate the problem:`)
     console.error;
 })
 
 process.on('unhandledRejection', err => {
-    naisu.error(`The bot could not be initialized. Stack: \n${err.stack}`)
+    logger.error(`Discord rejected the request. Error: \n${err}`)
 })
 
 module.exports = {
     naisu: naisu,
+    logger: logger,
 }
 

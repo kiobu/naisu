@@ -37,10 +37,10 @@ function exec(msg, args) {
             
             msg.channel.send({embed});
 
-            index.naisu.success(`Sent data for '${data.title}'.`)
+            index.logger.success(`Sent data for '${data.title}'.`)
             
             })
-            .catch((err) => index.naisu.error(err.stack))
+            .catch((err) => index.logger.error(err.stack))
 
     }
 }

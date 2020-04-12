@@ -12,7 +12,7 @@ var search = require('youtube-search');
 
 exports.exec = function(msg, args) {
     search(args.join(' '), opts, function(err, results) {
-        if(err) return console.log(err);
+        if(err) return index.logger.error(`Could not create connection to YouTube API. Stack: ${$err.stack}`);
        
         for (i = 0; i < results.length; i++) {
             if (results[i].kind == "youtube#video") {

@@ -73,13 +73,14 @@ exports.exec = function(msg, args) {
       let online = data.substring(last, data.indexOf('Top10'));
       last = last + online.length;
 
-    console.log(chalk.cyan(`[searchserver] `) + `User asked for info for ` + svname + ` in ` + msg.guild.name)
+    index.logger.serverquery.log(`User asked for info for ` + svname + ` in ` + msg.guild.name);
     let message = ''
 
     if (svname === '' || undefined) {
-      msg.channel.send(":warning: Server not found. Either it does not exist, or the string was malformed.");
+      message = (":warning: Server not found. Either it does not exist, or the string was malformed.");
+      index.logger.log("Server not found.")
     } else if (ip.indexOf('9987') >-1 || ip.indexOf('8767') >-1 || ip.indexOf('4489') > -1) {
-      msg.channel.send(":warning: Voice servers are not supported.");
+      message = (":warning: Voice servers are not supported.");
     } else {
     message = new Discord.RichEmbed()
       .setTitle(svname)
@@ -99,7 +100,7 @@ exports.exec = function(msg, args) {
 
     })
     .catch((err) => {
-      console.log(err)
+      index.logger.error(`An error has occured. Stack: ${err.stack}`)
     })
 
 }

@@ -15,7 +15,6 @@ function exec(msg, args) {
         return;
     }
 
-    console.log(msg.author.id);
     if (msg.author.id !== kio && msg.author.id !== moo && msg.author.id !== swr) {
         error.InsufficientPermissionsException(msg, args, "This command is restricted to the bot's creator.")
         return;
@@ -26,7 +25,7 @@ function exec(msg, args) {
             msg.delete();
         } catch(e) {
             error.GenericException(msg, args, `The evaluation failed.\n\n**Stack trace:**\n${e}`)
-            index.naisu.error(e)
+            index.logger.error(e)
         };
 }   ;
 };
