@@ -4,7 +4,6 @@ const SQLite = require('better-sqlite3')
 const LiveQuery = require("./livequery")
 
 let sql = "";
-
 let lqconf = "";
 
 module.exports.Connect = function() {
@@ -18,7 +17,7 @@ module.exports.Connect = function() {
     }
 
     if (lqconf.useSQLite) {
-        sql = new SQLite('../db/LiveQuery.sqlite')
+        sql = new SQLite(lqconf.SQLitePath)
         logger.log(`Connected to the SQLite database.`)
         setupDB(lqconf);
     }

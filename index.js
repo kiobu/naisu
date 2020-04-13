@@ -4,7 +4,9 @@ const fs = require('fs')
 const path = require('path')
 const SQLite = require('better-sqlite3')
 
-const sql = new SQLite('db/data.sqlite')
+const ROOT = path.dirname(require.main.filename);
+
+const sql = new SQLite(ROOT + 'db/data.sqlite')
 const logger = require('./lib/logger');
 
 let config = "";

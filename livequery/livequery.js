@@ -1,5 +1,7 @@
 const DBConn = require("./conn")
-const index = require("../index")
+const path = require('path')
+
+const ROOT = path.dirname(require.main.filename);
 
 // Set up LiveQuery obj.
 LiveQuery = {
@@ -8,6 +10,7 @@ LiveQuery = {
     }
 }
 
+// Set up LiveQuery.
 LiveQuery.db.Connect();
 
 module.exports = LiveQuery;
