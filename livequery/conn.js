@@ -6,7 +6,7 @@ const LiveQuery = require("./livequery")
 let sql = "";
 let lqconf = "";
 
-module.exports.Connect = function() {
+module.exports.Connect = () => {
     try {
         lqconf = require("./lq_config.json")
         if (lqconf) {
@@ -22,18 +22,20 @@ module.exports.Connect = function() {
         setupDB(lqconf);
     }
 
+    return sql;
+
     function setupDB(lqconf) {
         const table = sql.prepare(`SELECT count(*) FROM sqlite_master WHERE type='table' AND name='${lqconf.type}';`).get()
 
         if (!table['count(*)']) {
-            logger.log(`The LiveQuery table for ${lqconf.type} was not found! Creating...`)
-            sql.prepare(`CREATE TABLE IF NOT EXISTS ${lqconf.type} (uid TEXT PRIMARY KEY, svname TEXT, plyname TEXT, charname TEXT, msg TEXT);`).run()
-            sql.prepare(`CREATE UNIQUE INDEX idx_chat_id ON ${lqconf.type} (uid);`).run();
+            logger.log(`The LiveQuery table for "${lqconf.uniqueName}::${lqconf.type}" was not found! Creating...`)
+            sql.prepare(`CREATE TABLE IF NOT EXISTS '${lqconf.uniqueName}::${lqconf.type}' (uid TEXT PRIMARY KEY, svname TEXT, plyname TEXT, msg TEXT);`).run()
+            sql.prepare(`CREATE UNIQUE INDEX idx_chat_id ON '${lqconf.uniqueName}::${lqconf.type}' (uid);`).run();
             sql.pragma("synchronous = 1")
             sql.pragma("journal_mode = wal")
             logger.log('... Done!')
         } else {
-            logger.log(`LiveQuery table for ${lqconf.type} found.`)
+            logger.log(`LiveQuery table for ${lqconf.uniqueName}::${lqconf.type} found.`)
         }
     }
 }

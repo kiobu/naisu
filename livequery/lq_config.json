@@ -3,6 +3,7 @@
     "SQLitePath": "db/LiveQuery.sqlite",
 
     "type": "LQ_Clockwork",
+    "uniqueName": "Debug",
 
     "host": "",
     "db": "",
