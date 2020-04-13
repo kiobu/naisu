@@ -73,12 +73,12 @@ exports.exec = function(msg, args) {
       let online = data.substring(last, data.indexOf('Top10'));
       last = last + online.length;
 
-    index.logger.serverquery.log(`User asked for info for ` + svname + ` in ` + msg.guild.name);
+    index.logger.log(`User asked for info for ` + svname + ` in ` + msg.guild.name, "serverquery");
     let message = ''
 
     if (svname === '' || undefined) {
       message = (":warning: Server not found. Either it does not exist, or the string was malformed.");
-      index.logger.log("Server not found.")
+      index.logger.log("Server not found.", "serverquery")
     } else if (ip.indexOf('9987') >-1 || ip.indexOf('8767') >-1 || ip.indexOf('4489') > -1) {
       message = (":warning: Voice servers are not supported.");
     } else {
