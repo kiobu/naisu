@@ -1,0 +1,10 @@
+{
+    "useSQLite": true,
+
+    "type": "LQ_Clockwork",
+
+    "host": "",
+    "db": "",
+    "user": "",
+    "pass": ""
+}
