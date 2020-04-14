@@ -1,3 +1,7 @@
+# Deprecation
+
+This version of LiveQuery is deprecated. See https://github.com/kiobu/livequery for updates.
+
 # LiveQuery
 
 LiveQuery is a program that is used to fetch messages sent on Source game servers and post them to a Discord channel. Currently, it is embedded within my own Naisu bot, but will eventually become a standalone project.

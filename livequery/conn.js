@@ -38,7 +38,7 @@ module.exports.Connect = () => {
 
         if (!table['count(*)']) {
             logger.log(`The LiveQuery table for "${lqconf.uniqueName}::${lqconf.type}" was not found! Creating...`, "LQ")
-            sql.prepare(`CREATE TABLE IF NOT EXISTS '${lqconf.uniqueName}::${lqconf.type}' (uid TEXT PRIMARY KEY, svname TEXT, plyname TEXT, msg TEXT, time INTEGER);`).run()
+            sql.prepare(`CREATE TABLE IF NOT EXISTS '${lqconf.uniqueName}::${lqconf.type}' (uid INTEGER PRIMARY KEY, svname TEXT, plyname TEXT, msg TEXT, time INTEGER);`).run()
             sql.prepare(`CREATE UNIQUE INDEX idx_chat_id ON '${lqconf.uniqueName}::${lqconf.type}' (uid);`).run();
             sql.pragma("synchronous = 1")
             sql.pragma("journal_mode = wal")
@@ -56,9 +56,12 @@ module.exports.AddField = (sql, table) => {
     let query = sql.prepare(
         `INSERT OR REPLACE INTO '${lqconf.uniqueName}::${lqconf.type}' (uid, svname, plyname, msg, time) VALUES (@uid, @svname, @plyname, @msg, @time);`
     )
-
-    query.run(table);
-    module.exports.Listener.emit('newField');
+    try {
+        query.run(table);
+        module.exports.Listener.emit('newField');
+    } catch(e) {
+        logger.error("Could not add field to the database. This is likely an issue with the original request body.\n" + e, "LQ")
+    }
 }
 
 module.exports.FetchLatest = (sql) => {
