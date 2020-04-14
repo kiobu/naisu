@@ -33,6 +33,15 @@ naisu.on('ready', () => {
     // Setup express routes to /api.
     var router = express.Router();
 
+    LiveQuery.app.use((err, req, res, next) => {
+        // If there is a JSON parse issue, throw away the request.
+        if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
+            logger.error("There was an issue parsing the request body. Error: " + err, "LQ");
+            return res.sendStatus(400); // Bad request
+        }    
+        next();
+    });
+
     router.post('/', function(req, res) {
         let ip = (req.headers['x-forwarded-for'] || req.connection.remoteAddress || '').split(',')[0].trim();
         let queryObj = req.body;
