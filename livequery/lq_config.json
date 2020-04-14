@@ -5,10 +5,5 @@
     "type": "LQ_Clockwork",
     "uniqueName": "Debug",
 
-    "host": "",
-    "db": "",
-    "user": "",
-    "pass": "",
-
     "port": "25050"
 }
