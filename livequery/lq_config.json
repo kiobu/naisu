@@ -5,5 +5,7 @@
     "type": "LQ_Clockwork",
     "uniqueName": "Debug",
 
-    "port": "25050"
+    "port": "25050",
+
+    "channelID": "673950971172356106"
 }

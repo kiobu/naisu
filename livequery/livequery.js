@@ -3,6 +3,7 @@ const path = require('path')
 const logger = require('../lib/logger')
 const express = require('express')
 const bodyParser = require('body-parser');
+const Discord = require('discord.js')
 
 const model = {uid: "",plyname: "",svname: "",msg: "",time: 0}
 
@@ -33,12 +34,15 @@ naisu.on('ready', () => {
     var router = express.Router();
 
     router.post('/', function(req, res) {
+        let ip = (req.headers['x-forwarded-for'] || req.connection.remoteAddress || '').split(',')[0].trim();
         let queryObj = req.body;
         if (objectsHaveSameKeys(queryObj, model)) {
+            logger.success(`POST request accepted. Req. IP: ${ip}`, "LQ")
             LiveQuery.db.AddField(Database, queryObj)
-            res.send("Data successfully parsed.")
+            res.send(`Data successfully parsed. IP: ${ip}`)
         } else {
-            res.send("The request was not in the proper format.")
+            logger.log(`POST request denied. Req. IP: ${ip}`, "LQ")
+            res.send(`The request was not in the proper format. IP: ${ip}`)
         }
     });
 
@@ -50,7 +54,12 @@ naisu.on('ready', () => {
 
     // Fire Discord msg. event.
     LiveQuery.db.Listener.on('newField', () => {
-        naisu.channels.get("673950971172356106").send("New message received:\n" + JSON.stringify(LiveQuery.db.FetchLatest(Database)))
+        const EMBED = new Discord.RichEmbed()
+        .setColor('#aaff00')
+        .setTitle(LiveQuery.db.FetchLatest(Database).svname)
+        .addField("Player Name", LiveQuery.db.FetchLatest(Database).plyname)
+        .addField("Message", LiveQuery.db.FetchLatest(Database).msg)
+        naisu.channels.get(LiveQuery.config.channelID).send(EMBED)
     })
 
     module.exports = LiveQuery;
