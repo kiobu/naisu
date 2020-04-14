@@ -1,3 +1,4 @@
+const naisu = require('../index').naisu
 const DBConn = require("./conn")
 const path = require('path')
 const logger = require('../lib/logger')
