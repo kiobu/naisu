@@ -38,6 +38,9 @@ exports.exec = function(msg, args) {
         }
         if (list) {
             msg.channel.send(EMBED);
+            EMBED.setTitle('A')
+            EMBED.setDescription('A')
+            EMBED.fields = []
         }
         
         return;
