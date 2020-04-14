@@ -14,7 +14,6 @@ let config = "";
 const naisu = new Discord.Client();
 
 // Checks for config.json
-
 if (!fs.existsSync(path.join(__dirname, 'config.json'))) {
     logger.error("config.json not found!")
 } 
@@ -27,7 +26,6 @@ try {
 }
 
 // Checks for database table data and runs a few essential queries.
-
 const exptab = sql.prepare("SELECT count(*) FROM sqlite_master WHERE type='table' AND name='experience';").get()
 
 if (!exptab['count(*)']) {
@@ -40,7 +38,6 @@ if (!exptab['count(*)']) {
 }
 
 // Initializes Naisubot.
-
 naisu.on('ready', () => {
     logger.log('Loading modules...')
     naisu.moduleinit();
@@ -51,7 +48,6 @@ naisu.login(config.token);
 logger.log('Naisu initialized.')
 
 // Loads the modules.
-
 naisu.moduleinit = function() {
     naisu.modules = {};
 
@@ -75,7 +71,6 @@ naisu.moduleinit = function() {
 }
 
 naisu.on('message', (msg) => {
-
     if (msg.content.length == config.prefix.length) {return}
 
     naisu.getScore = sql.prepare("SELECT * FROM `experience` WHERE serverid = ? AND userid = ?");

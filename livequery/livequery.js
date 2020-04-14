@@ -1,16 +1,19 @@
 const DBConn = require("./conn")
 const path = require('path')
-
-const ROOT = path.dirname(require.main.filename);
+const logger = require('../lib/logger')
 
 // Set up LiveQuery obj.
-LiveQuery = {
+const LiveQuery = {
     db: {
-        Connect: DBConn.Connect
-    }
+        Connect: DBConn.Connect,
+        AddField: DBConn.AddField
+    },
+    config: DBConn.config
 }
 
-// Set up LiveQuery.
-LiveQuery.db.Connect();
-
 module.exports = LiveQuery;
+
+
+// Set up LiveQuery.
+
+const Database = LiveQuery.db.Connect();
