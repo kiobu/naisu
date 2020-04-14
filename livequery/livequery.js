@@ -47,7 +47,11 @@ naisu.on('ready', () => {
         let queryObj = req.body;
         if (objectsHaveSameKeys(queryObj, model)) {
             logger.success(`POST request accepted. Req. IP: ${ip}`, "LQ")
-            LiveQuery.db.AddField(Database, queryObj)
+            if (LiveQuery.config.useSQLite) {
+                LiveQuery.db.AddField(Database, queryObj)
+            } else {
+                LiveQuery.db.Listener.emit('newField', queryObj);
+            }
             res.send(`Data successfully parsed. IP: ${ip}`)
         } else {
             logger.log(`POST request denied. Req. IP: ${ip}`, "LQ")
@@ -62,12 +66,20 @@ naisu.on('ready', () => {
     logger.log(`LiveQuery listening on port ${LiveQuery.config.port}`, "LQ")
 
     // Fire Discord msg. event.
-    LiveQuery.db.Listener.on('newField', () => {
+    LiveQuery.db.Listener.on('newField', (body) => {
         const EMBED = new Discord.RichEmbed()
         .setColor('#aaff00')
-        .setTitle(LiveQuery.db.FetchLatest(Database).svname)
-        .addField("Player Name", LiveQuery.db.FetchLatest(Database).plyname)
-        .addField("Message", LiveQuery.db.FetchLatest(Database).msg)
+        if (LiveQuery.config.useSQLite) {
+            EMBED
+                .setTitle(LiveQuery.db.FetchLatest(Database).svname)
+                .addField("Player Name", LiveQuery.db.FetchLatest(Database).plyname)
+                .addField("Message", LiveQuery.db.FetchLatest(Database).msg)
+        } else {
+            EMBED
+                .setTitle(body.svname)
+                .addField("Player Name", body.plyname)
+                .addField("Message", body.msg)
+        }
         naisu.channels.get(LiveQuery.config.channelID).send(EMBED)
     })
 

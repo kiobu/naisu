@@ -27,6 +27,8 @@ module.exports.Connect = () => {
         sql = new SQLite(lqconf.SQLitePath)
         logger.log(`Connected to the SQLite database.`, "LQ")
         setupDB(lqconf);
+    } else {
+        logger.log(`SQL server request saving is disabled.`, "LQ")
     }
 
     return sql;
