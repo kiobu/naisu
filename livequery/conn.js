@@ -2,6 +2,7 @@ const logger = require("../lib/logger")
 const SQLite = require('better-sqlite3')
 const LiveQuery = require("./livequery")
 const path = require("path");
+const EventEmitter = require("events");
 
 const ROOT = path.dirname(require.main.filename);
 
@@ -35,7 +36,7 @@ module.exports.Connect = () => {
 
         if (!table['count(*)']) {
             logger.log(`The LiveQuery table for "${lqconf.uniqueName}::${lqconf.type}" was not found! Creating...`, "LQ")
-            sql.prepare(`CREATE TABLE IF NOT EXISTS '${lqconf.uniqueName}::${lqconf.type}' (uid TEXT PRIMARY KEY, svname TEXT, plyname TEXT, msg TEXT);`).run()
+            sql.prepare(`CREATE TABLE IF NOT EXISTS '${lqconf.uniqueName}::${lqconf.type}' (uid TEXT PRIMARY KEY, svname TEXT, plyname TEXT, msg TEXT, time INTEGER);`).run()
             sql.prepare(`CREATE UNIQUE INDEX idx_chat_id ON '${lqconf.uniqueName}::${lqconf.type}' (uid);`).run();
             sql.pragma("synchronous = 1")
             sql.pragma("journal_mode = wal")
@@ -46,15 +47,22 @@ module.exports.Connect = () => {
     }
 }
 
+module.exports.Listener = new EventEmitter();
+
 // Takes a SQLite object.
 module.exports.AddField = (sql, table) => {
     let query = sql.prepare(
-        `INSERT OR REPLACE INTO '${lqconf.uniqueName}::${lqconf.type}' (uid, svname, plyname, msg) VALUES (@uid, @svname, @plyname, @msg);`
+        `INSERT OR REPLACE INTO '${lqconf.uniqueName}::${lqconf.type}' (uid, svname, plyname, msg, time) VALUES (@uid, @svname, @plyname, @msg, @time);`
     )
 
     query.run(table);
+    module.exports.Listener.emit('newField');
 }
 
-module.exports.Listener = (sql) => {
-    
+module.exports.FetchLatest = (sql) => {
+    let query = sql.prepare(
+        `SELECT * FROM '${lqconf.uniqueName}::${lqconf.type}' WHERE time = (SELECT MAX(time) FROM '${lqconf.uniqueName}::${lqconf.type}');`
+    )
+
+    return query.get()
 }
