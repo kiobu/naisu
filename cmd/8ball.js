@@ -15,7 +15,7 @@ exports.exec = function(msg, args) {
     "Better not tell you now", "Cannot predict now",
     "Concentrate and ask again", "Don't bet on it",
     "My reply is no", "My sources say no", "Outlook not so good",
-    "Very doubtful"]
+    "Very doubtful", "Fuck you"]
 
-    msg.reply(":8ball: " + REPLIES[(Math.floor(Math.random() * 19))] + ".")
+    msg.reply(":8ball: " + REPLIES[(Math.floor(Math.random() * 20))] + ".")
 }
