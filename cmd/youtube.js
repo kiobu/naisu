@@ -12,6 +12,12 @@ var search = require('youtube-search');
     };
 
 exports.exec = function(msg, args) {
+
+    if (args.length === 0) {
+        error.NoArgsException(msg,args,"You need to specify a video name to search for.")
+        return;
+    }
+
     list = false;
     for (i = 0; i < args.length; i++) {
         if (args[i] === "--list") {
