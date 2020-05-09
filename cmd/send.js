@@ -2,7 +2,7 @@ const error = require('../lib/error')
 
 function exec(msg, args) {
     if (!msg.member.hasPermission("ADMINISTRATOR")) {
-        error.InsufficientPermissionsException(msg, args, "You need to be ADMINISTRATOR to use this command!")
+        error.InsufficientPermissionsException(msg, args, "You need to be administrator to use this command!")
     } else {
         msg.channel.send(args.join(" "));
         return msg.delete();
