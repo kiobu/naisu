@@ -13,7 +13,14 @@ fs.readdir('./res/pats/', (err, files) => {
 });
 
 function exec(msg, args) {
-    let target = msg.mentions.users.first().id
+    target = ''
+    try {
+        target = msg.mentions.users.first().id
+    } catch (_) {
+        error.IllegalArgumentException(msg, args, "This command requires a mentioned user as an argument. Make sure you @ somebody!");
+        return;
+    }
+
     let initiator = msg.author.id
 
     let file = Math.floor(Math.random() * (images.length) + 1)
