@@ -25,3 +25,5 @@ exports.exec = function(msg) {
     msg.channel.send({embed});
 
 }
+
+exports.description = 'Get your current experience in the Naisu leveling system.'

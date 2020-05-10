@@ -23,3 +23,5 @@ exports.exec = function(msg, args) {
 	}
     }
 }
+
+exports.description = 'Get the full resolution of a user\'s avatar.'

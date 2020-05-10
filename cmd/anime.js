@@ -45,4 +45,7 @@ function exec(msg, args) {
     }
 }
 
-module.exports = {exec: exec}
+module.exports = {
+    exec: exec,
+    description: 'Search MAL for information about an anime.'
+}

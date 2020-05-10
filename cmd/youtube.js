@@ -52,3 +52,6 @@ exports.exec = function(msg, args) {
     });
 }
 
+exports.description = 'Search YouTube for a video. Use the --list argument to get a list of videos.'
+exports.aliases = ["yt"]
+

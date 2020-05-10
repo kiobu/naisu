@@ -104,3 +104,6 @@ exports.exec = function(msg, args) {
     })
 
 }
+
+exports.description = 'Query a server given an (IP:port) using the GameTracker website.'
+exports.aliases = ["sq"]

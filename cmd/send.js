@@ -9,4 +9,7 @@ function exec(msg, args) {
     }
 }
 
-module.exports = {exec: exec};
+module.exports = {
+    exec: exec,
+    description: 'Send a message using Naisu as the author.'
+};

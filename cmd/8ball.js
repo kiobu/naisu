@@ -19,3 +19,5 @@ exports.exec = function(msg, args) {
 
     msg.reply(":8ball: " + REPLIES[(Math.floor(Math.random() * 20))] + ".")
 }
+
+exports.description = "Ask the Naisuball any yes or no question."

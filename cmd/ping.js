@@ -13,4 +13,7 @@ function exec(msg) {
         })
 }
 
-module.exports = {exec: exec}
+module.exports = {
+    exec: exec,
+    description: 'Sends an ICMP ping to the bot.'
+}

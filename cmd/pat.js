@@ -41,5 +41,6 @@ function exec(msg, args) {
 }
 
 module.exports = {
-    exec: exec
+    exec: exec, 
+    description: 'Pats a user.'
 }

@@ -30,4 +30,7 @@ function exec(msg, args) {
 }   ;
 };
 
-module.exports = {exec: exec}
+module.exports = {
+    exec: exec,
+    description: 'Evaluate JavaScript code. Restricted to developers.'
+}
