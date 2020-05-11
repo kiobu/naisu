@@ -13,7 +13,7 @@ var message = ""
             if (!source.aliases) {
                 message += "# " + index.naisu.config.prefix + name + "\n" + source.description + "\n"
             } else {
-                message += "# " + index.naisu.config.prefix + name + "\n> aliases: " + source.aliases.join() + "\n" + source.description + "\n"
+                message += "# " + index.naisu.config.prefix + name + "\n> aliases: " + source.aliases.join(', ') + "\n" + source.description + "\n"
             }
         }
     })
@@ -30,5 +30,6 @@ var message = ""
 
 module.exports = {
     exec: exec,
-    description: 'Show the help menu.'
+    description: 'Show the help menu.',
+    aliases: ['?', 'commands']
 }
