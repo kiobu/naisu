@@ -10,11 +10,6 @@ function exec(msg) {
         return;
     }
 
-    if (args.every(v => v === args[0])) {
-        msg.channel.send("Very funny.")
-        return;
-    }
-
     let choice = Math.floor(Math.random() * (args.length));
     msg.channel.send(`I choose ...`)
         .then(message => {
