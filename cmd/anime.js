@@ -14,23 +14,23 @@ function exec(msg, args) {
         let text = args.join(' ').toLowerCase()
     
         mal.getInfoFromName(text)
-            .then(data => {  
-                console.log(data)
+            .then(data => {
+
                 const embed = new Discord.RichEmbed()
                 .setTitle("Synopsis")
                 .setAuthor(data.title)
                 //.setColor(index.naisu.config.embedcolor)
-            .setColor(0xffffff)
+                .setColor(0xffffff)
                 .setDescription(data.synopsis)
                 .setFooter(index.naisu.config.name + " This data is automatically fetched with mal-scraper.", `${index.naisu.user.avatarURL}`)
                 .setImage(data.picture)
                 .addField("Genres", data.genres.join(", "))
-                .addField("Type", data.type)
-                .addField("Episodes", data.episodes)
-                .addField("Status", data.status)
-                .addField("Aired", data.aired)
-                .addField("Ranked", data.ranked)
-                .addField("Popularity", data.popularity)
+                .addField("Type", data.type, true)
+                .addField("Episodes", data.episodes, true)
+                .addField("Status", data.status, true)
+                .addField("Aired", data.aired, true)
+                .addField("Ranked", data.ranked, true)
+                .addField("Popularity", data.popularity, true)
                 .setTimestamp();
                 
                 msg.channel.send({embed});
