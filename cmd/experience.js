@@ -7,7 +7,7 @@ const error = require("../lib/error");
 
 exports.exec = function(msg) {
     
-    let score = sql.prepare("SELECT * FROM experience WHERE userid = ? AND serverid = ?;").get(msg.author.id, msg.guild.id);
+    let score = sql.prepare("SELECT * FROM experience WHERE userid = ?;").get(msg.author.id);
 
     let nxtLvl = (10*Math.pow((score.lvl+1), 2));
     

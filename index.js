@@ -30,8 +30,8 @@ const exptab = sql.prepare("SELECT count(*) FROM sqlite_master WHERE type='table
 
 if (!exptab['count(*)']) {
     logger.log('The experience table was not found! Creating...')
-    sql.prepare("CREATE TABLE IF NOT EXISTS experience (uid TEXT PRIMARY KEY, userid TEXT, username TEXT, serverid TEXT, xp INTEGER, lvl INTEGER);").run()
-    sql.prepare("CREATE UNIQUE INDEX idx_scores_id ON experience (uid);").run();
+    sql.prepare("CREATE TABLE IF NOT EXISTS experience (userid TEXT PRIMARY KEY, username TEXT, xp INTEGER, lvl INTEGER);").run()
+    sql.prepare("CREATE UNIQUE INDEX idx_scores_id_new ON experience (userid);").run();
     sql.pragma("synchronous = 1")
     sql.pragma("journal_mode = wal")
     logger.log('... Done!')
@@ -73,21 +73,19 @@ naisu.moduleinit = function() {
 naisu.on('message', (msg) => {
     if (msg.content.length == config.prefix.length) {return}
 
-    naisu.getScore = sql.prepare("SELECT * FROM `experience` WHERE serverid = ? AND userid = ?");
-    naisu.setScore = sql.prepare("INSERT OR REPLACE INTO experience (uid, userid, username, serverid, xp, lvl) VALUES (@uid, @userid, @username, @serverid, @xp, @lvl);")
+    naisu.getScore = sql.prepare("SELECT * FROM `experience` WHERE userid = ?");
+    naisu.setScore = sql.prepare("INSERT OR REPLACE INTO experience (userid, username, xp, lvl) VALUES (@userid, @username, @xp, @lvl);")
 
     if (msg.author.bot) return;
     if (msg.channel.type !== "text") return;
 
     if (msg.guild) {
-        let localscore = naisu.getScore.get(msg.guild.id, msg.author.id);
+        let localscore = naisu.getScore.get(msg.author.id);
 
         if (!localscore) {
             localscore = {
-                uid: `${msg.guild.id}::${msg.author.id}`,
                 userid: msg.author.id,
                 username: msg.author.username,
-                serverid: msg.guild.id,
                 xp: 0,
                 lvl: 0,
             }
