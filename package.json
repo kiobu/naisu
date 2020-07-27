@@ -15,6 +15,7 @@
     "express": "^4.17.1",
     "fs": "^0.0.1-security",
     "glob": "^7.1.6",
+    "lodash": "^4.17.19",
     "mal-scraper": "^2.6.8",
     "request-promise": "^4.2.4",
     "yargs": "^15.3.1",
