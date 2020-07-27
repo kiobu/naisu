@@ -9,8 +9,6 @@ function exec(msg) {
     for (let i = 1; i < tmp.length; i++) {
         args.push(tmp[i].replace(',',''))
     }
-
-    console.log(args)
     
     if (args.length === 0 || !args) {
         error.NoArgsException(msg, args, "You need to specify a list to choose from, separated by commas.")
@@ -18,7 +16,6 @@ function exec(msg) {
     }
 
     let choice = Math.floor(Math.random() * args.length);
-    console.log(choice)
     msg.channel.send(`I choose ...`)
         .then(message => {
             setTimeout(_ => { 
