@@ -15,10 +15,10 @@ function exec(msg, args) {
     
         mal.getInfoFromName(text)
             .then(data => {
-
+                console.log(data)
                 const embed = new Discord.RichEmbed()
                 .setTitle("Synopsis")
-                .setAuthor(data.title)
+                .setAuthor(data.englishTitle)
                 //.setColor(index.naisu.config.embedcolor)
                 .setColor(0xffffff)
                 .setDescription(data.synopsis)
@@ -35,7 +35,7 @@ function exec(msg, args) {
                 
                 msg.channel.send({embed});
 
-                index.logger.success(`Sent data for '${data.title}'.`)
+                index.logger.success(`Sent data for '${data.englishTitle}'.`)
             
             })
             .catch((err) => index.logger.error(err.stack))
