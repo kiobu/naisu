@@ -3,8 +3,6 @@ const error = require('../lib/error')
 
 function exec(msg, args) {
     args = args.join(" ").split(',').map(x => x.trim());
-
-    console.log(args)
     
     if (args.length === 0 || !args || args[0] == "") {
         error.NoArgsException(msg, args, "You need to specify a list to choose from, separated by commas.")
@@ -12,7 +10,7 @@ function exec(msg, args) {
     }
 
     let choice = Math.floor(Math.random() * args.length);
-    
+
     msg.channel.send(`I choose ...`)
         .then(message => {
             setTimeout(_ => { 
