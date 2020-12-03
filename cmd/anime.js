@@ -8,14 +8,12 @@ function exec(msg, args) {
 
     if (args.length === 0) {
         error.NoArgsException(msg, args, "No anime was given.")
-    } 
-    else {
+    } else {
 
         let text = args.join(' ').toLowerCase()
     
         mal.getInfoFromName(text)
-            .then(data => {
-                console.log(data)
+            .then((data) => {
                 const embed = new Discord.RichEmbed()
                 .setTitle("Synopsis")
                 .setAuthor(data.englishTitle)
@@ -36,10 +34,10 @@ function exec(msg, args) {
                 msg.channel.send({embed});
 
                 index.logger.success(`Sent data for '${data.englishTitle}'.`)
-            
+
+                return;
             })
             .catch((err) => index.logger.error(err.stack))
-
     }
 }
 
