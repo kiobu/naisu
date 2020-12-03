@@ -11,10 +11,8 @@ function exec(msg, args) {
         return;
     }
 
-    console.log(args)
-
     let choice = Math.floor(Math.random() * args.length);
-    console.log(choice)
+    
     msg.channel.send(`I choose ...`)
         .then(message => {
             setTimeout(_ => { 
